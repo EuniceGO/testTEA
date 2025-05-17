@@ -1,0 +1,123 @@
+﻿@model testTEA.Models.Usuario
+@{
+    Layout = null;
+    ViewBag.Title = "Registro";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Registro</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #e9f1f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #218838;
+            }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .link {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+            .link a {
+                color: #007bff;
+                text-decoration: none;
+            }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Registro de Usuario</h2>
+
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+
+            <label>Nombre completo</label>
+            @Html.TextBoxFor(m => m.nombre, new { @required = "required" })
+
+            <label>Correo electrónico</label>
+            @Html.TextBoxFor(m => m.correo, new { @type = "email", @required = "required" })
+
+            <label>Tipo de usuario</label>
+            @Html.DropDownListFor(m => m.rol,
+                     new SelectList(new[] {
+                    new { Value = "Padre", Text = "Padre" },
+                    new { Value = "Profesional", Text = "Profesional" }
+                        }, "Value", "Text"),
+                     "Seleccione un rol",
+                     new { @required = "required" })
+
+            <label>Contraseña</label>
+            @Html.PasswordFor(m => m.contrasena, new { @required = "required" })
+
+            <button type="submit">Registrar</button>
+        }
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="error">@ViewBag.Error</div>
+        }
+
+        <div class="link">
+            ¿Ya tienes cuenta? <a href="/Login/Login">Inicia sesión</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
