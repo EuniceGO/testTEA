@@ -104,23 +104,25 @@ namespace testTEA.Controllers
         [HttpPost]
         public IActionResult Login(string correo, string clave)
         {
-            var user = _testContext.usuarios
-                .FirstOrDefault(u => u.correo == correo && u.contrasena == clave);
+            // Buscar usuario por correo
+            var user = _testContext.usuarios.FirstOrDefault(u => u.correo == correo);
 
-            if (user != null)
+            // Verificar si el usuario existe y si la contraseña coincide con el hash almacenado
+            if (user != null && SeguridadHelper.VerificarPassword(clave, user.contrasena))
             {
+                // Verificar si el estado es Aprobado
                 if (user.Estado != "Aprobado")
                 {
                     ViewBag.Error = "Tu cuenta aún no ha sido aprobada por un administrador.";
                     return View();
                 }
 
-
+                // Guardar datos en sesión
                 HttpContext.Session.SetInt32("id_usuario", user.id_usuario);
                 HttpContext.Session.SetString("nombre", user.nombre);
                 HttpContext.Session.SetString("rol", user.rol);
-               
 
+                // Redirigir según el rol
                 if (user.rol == "Padre")
                 {
                     return RedirectToAction("Index", "Padre");
@@ -128,15 +130,19 @@ namespace testTEA.Controllers
                 else if (user.rol == "Profesional")
                 {
                     return RedirectToAction("Index", "Profesional");
-                }else if (user.rol == "Administrador")
+                }
+                else if (user.rol == "Administrador")
                 {
                     return RedirectToAction("Index_admin", "Admin");
                 }
             }
 
-            ViewBag.Error = "correo o clave incorrectos.";
+            // Error genérico
+            ViewBag.Error = "Correo o clave incorrectos.";
             return View();
         }
+
+
 
 
         // Cerrar sesión
