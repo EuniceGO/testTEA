@@ -2,7 +2,7 @@
 
 namespace testTEA.Models
 {
-    public class test
+    public class tests
     {
         [Key]
         public int id_test { get; set; }

@@ -9,22 +9,22 @@ using testTEA.Models;
 
 namespace testTEA.Controllers
 {
-    public class TestsController : Controller
+    public class PreguntasController : Controller
     {
         private readonly testContext _context;
 
-        public TestsController(testContext context)
+        public PreguntasController(testContext context)
         {
             _context = context;
         }
 
-        // GET: Tests
+        // GET: Preguntas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.tests.ToListAsync());
+            return View(await _context.preguntas.ToListAsync());
         }
 
-        // GET: Tests/Details/5
+        // GET: Preguntas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,43 +32,45 @@ namespace testTEA.Controllers
                 return NotFound();
             }
 
-            var test = await _context.tests
-                .FirstOrDefaultAsync(m => m.id_test == id);
-            if (test == null)
+            var preguntas = await _context.preguntas
+                .FirstOrDefaultAsync(m => m.id_pregunta == id);
+            if (preguntas == null)
             {
                 return NotFound();
             }
 
-            return View(test);
+            return View(preguntas);
         }
 
-        // GET: Tests/Create
+        // GET: Preguntas/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Tests/Create
+        // POST: Preguntas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id_test,nombre,descripcion")] tests test_)
+        public async Task<IActionResult> Create([Bind("id_pregunta,id_test,numero_pregunta,texto")] preguntas preguntas)
         {
+
+            int? ultimoTestId = HttpContext.Session.GetInt32("TestId");
+
+          
+            preguntas.id_test = ultimoTestId.Value; // Asigna el valor a id_test
+
             if (ModelState.IsValid)
             {
-                _context.Add(test_);
+                _context.Add(preguntas);
                 await _context.SaveChangesAsync();
-
-                HttpContext.Session.SetInt32("TestId", test_.id_test);
-
-
-                return RedirectToAction("Create", "Preguntas");
+                return RedirectToAction(nameof(Index));
             }
-            return View(test_);
+            return View(preguntas);
         }
 
-        // GET: Tests/Edit/5
+        // GET: Preguntas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,22 +78,22 @@ namespace testTEA.Controllers
                 return NotFound();
             }
 
-            var test = await _context.tests.FindAsync(id);
-            if (test == null)
+            var preguntas = await _context.preguntas.FindAsync(id);
+            if (preguntas == null)
             {
                 return NotFound();
             }
-            return View(test);
+            return View(preguntas);
         }
 
-        // POST: Tests/Edit/5
+        // POST: Preguntas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id_test,nombre,descripcion")] tests test)
+        public async Task<IActionResult> Edit(int id, [Bind("id_pregunta,id_test,numero_pregunta,texto")] preguntas preguntas)
         {
-            if (id != test.id_test)
+            if (id != preguntas.id_pregunta)
             {
                 return NotFound();
             }
@@ -100,12 +102,12 @@ namespace testTEA.Controllers
             {
                 try
                 {
-                    _context.Update(test);
+                    _context.Update(preguntas);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TestExists(test.id_test))
+                    if (!preguntasExists(preguntas.id_pregunta))
                     {
                         return NotFound();
                     }
@@ -116,10 +118,10 @@ namespace testTEA.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(test);
+            return View(preguntas);
         }
 
-        // GET: Tests/Delete/5
+        // GET: Preguntas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -127,34 +129,34 @@ namespace testTEA.Controllers
                 return NotFound();
             }
 
-            var test = await _context.tests
-                .FirstOrDefaultAsync(m => m.id_test == id);
-            if (test == null)
+            var preguntas = await _context.preguntas
+                .FirstOrDefaultAsync(m => m.id_pregunta == id);
+            if (preguntas == null)
             {
                 return NotFound();
             }
 
-            return View(test);
+            return View(preguntas);
         }
 
-        // POST: Tests/Delete/5
+        // POST: Preguntas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var test = await _context.tests.FindAsync(id);
-            if (test != null)
+            var preguntas = await _context.preguntas.FindAsync(id);
+            if (preguntas != null)
             {
-                _context.tests.Remove(test);
+                _context.preguntas.Remove(preguntas);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TestExists(int id)
+        private bool preguntasExists(int id)
         {
-            return _context.tests.Any(e => e.id_test == id);
+            return _context.preguntas.Any(e => e.id_pregunta == id);
         }
     }
 }

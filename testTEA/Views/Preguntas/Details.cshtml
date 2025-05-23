@@ -1,0 +1,36 @@
+﻿@model testTEA.Models.preguntas
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>preguntas</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.id_test)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.id_test)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.numero_pregunta)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.numero_pregunta)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.texto)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.texto)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.id_pregunta">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

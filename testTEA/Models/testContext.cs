@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using testTEA.Models;
 
 namespace testTEA.Models
 {
@@ -9,7 +10,7 @@ namespace testTEA.Models
         }
 
         public DbSet<Usuario> usuarios { get; set; } 
-        public DbSet<test> test { get; set; }
+        public DbSet<tests> tests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,5 +19,6 @@ namespace testTEA.Models
                 .Property(u => u.id_usuario)
                 .ValueGeneratedOnAdd();
         }
+        public DbSet<testTEA.Models.preguntas> preguntas { get; set; } = default!;
     }
 }

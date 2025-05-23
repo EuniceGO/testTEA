@@ -1,27 +1,27 @@
-﻿@model testTEA.Models.tests
+﻿@model testTEA.Models.preguntas
 
 @{
     ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
 <h1>Create</h1>
 
-<h4>Test</h4>
+<h4>preguntas</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
             <div class="form-group">
-                <label asp-for="nombre" class="control-label"></label>
-                <input asp-for="nombre" class="form-control" />
-                <span asp-validation-for="nombre" class="text-danger"></span>
+                <label asp-for="numero_pregunta" class="control-label"></label>
+                <input asp-for="numero_pregunta" class="form-control" />
+                <span asp-validation-for="numero_pregunta" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="descripcion" class="control-label"></label>
-                <input asp-for="descripcion" class="form-control" />
-                <span asp-validation-for="descripcion" class="text-danger"></span>
+                <label asp-for="texto" class="control-label"></label>
+                <input asp-for="texto" class="form-control" />
+                <span asp-validation-for="texto" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
