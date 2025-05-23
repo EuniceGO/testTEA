@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace testTEA.Models
 {
     public class Usuario
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id_usuario { get; set; }
 
         public string nombre { get; set; }
@@ -14,12 +16,13 @@ namespace testTEA.Models
 
       
 
-        [Required]
-        public string numeroSello { get; set; } = "";
+  
+        public string? numeroSello  { get; set; } = "";
 
         [Required]
         public string Estado { get; set; } = "Pendiente";
 
+        public string? telefono { get; set; }
 
 
     }

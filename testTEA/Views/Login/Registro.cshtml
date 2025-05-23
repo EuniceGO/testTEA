@@ -77,6 +77,43 @@
                 color: #007bff;
                 text-decoration: none;
             }
+
+
+      
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .password-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .password-input {
+            flex: 1;
+            width:80px;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .toggle-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width:40px;
+            font-size: 14px;
+            padding: 4px 6px;
+            line-height: 1;
+            color: #555;
+        }
+
+            .toggle-button:hover {
+                color: #000;
+            }
+
+
     </style>
 </head>
 <body>
@@ -87,29 +124,77 @@
         {
             @Html.ValidationSummary(true)
 
-            <label>Nombre completo</label>
-            @Html.TextBoxFor(m => m.nombre, new { @required = "required" })
+            <div class="form-group">
+                <label>Nombre completo</label>
+                @Html.TextBoxFor(m => m.nombre, new { @required = "required", @class = "input-full" })
+            </div>
 
-            <label>Correo electrónico</label>
-            @Html.TextBoxFor(m => m.correo, new { @type = "email", @required = "required" })
+            <div class="form-group">
+                <label>Correo electrónico</label>
+                @Html.TextBoxFor(m => m.correo, new { @type = "email", @required = "required", @class = "input-full" })
+            </div>
 
-            <label>Tipo de usuario</label>
-            @Html.DropDownListFor(m => m.rol,
-                     new SelectList(new[] {
-                    new { Value = "Padre", Text = "Padre" },
-                    new { Value = "Profesional", Text = "Profesional" }
-                        }, "Value", "Text"),
-                     "Seleccione un rol",
-                     new { @required = "required" })
+            <div class="form-group">
+                <label>Tipo de usuario</label>
+                @Html.DropDownListFor(m => m.rol,
+                         new SelectList(new[] {
+                new { Value = "Padre", Text = "Padre" },
+                new { Value = "Profesional", Text = "Profesional" }
+                }, "Value", "Text"),
+                         "Seleccione un rol",
+                         new { @required = "required", @class = "input-full" })
+            </div>
 
-            <label>Contraseña</label>
-            @Html.PasswordFor(m => m.contrasena, new { @required = "required" })
+            <div class="form-group">
+                <label>Contraseña</label>
+                <div class="password-row">
+                    @Html.PasswordFor(m => m.contrasena, new
+                        {
+                            @id = "contrasena",
+                            @required = "required",
+                            @class = "password-input"
+                        })
+                    <button type="button" class="toggle-button" onclick="togglePassword('contrasena')">
+                        👁
+                    </button>
+                </div>
+            </div>
 
-            <label>Número de Sello</label>
-            @Html.TextBoxFor(m => m.numeroSello, new { @required = "required" })
+            <div class="form-group">
+                <label>Confirmar Contraseña</label>
+                <div class="password-row">
+                    <input type="password" id="confirmarContrasena" name="confirmarContrasena"
+                           required class="password-input" />
+                    <button type="button" class="toggle-button" onclick="togglePassword('confirmarContrasena')">
+                        👁
+                    </button>
+                </div>
+            </div>
 
-            <button type="submit">Registrar</button>
+
+            <div class="form-group">
+                <label>Número de Sello (Si es profesional)</label>
+                @Html.TextBoxFor(m => m.numeroSello, new { @id = "numeroSello", @disabled = "disabled", @class = "input-full" })
+            </div>
+
+            <div class="form-group">
+                <label>Número de Teléfono</label>
+                <input type="text"
+                       id="telefono"
+                       name="telefono"
+                       required
+                       class="input-full"
+                       placeholder="+503 0000-0000"
+                       maxlength="15" />
+            </div>
+
+            <small id="telefonoError" style="color:red; display:none;">Formato inválido. Usa +503 0000-0000</small>
+
+
+
+            <button type="submit" class="submit-button">Registrar</button>
         }
+
 
         @if (ViewBag.Error != null)
         {
@@ -119,7 +204,81 @@
         <div class="link">
             ¿Ya tienes cuenta? <a href="/Login/Login">Inicia sesión</a>
         </div>
+
+
+
     </div>
+
+   
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const input = document.getElementById("telefono");
+
+            input.value = "+503 ";
+
+            input.addEventListener("input", function (e) {
+                const raw = input.value.replace(/[^\d]/g, "");
+                let formatted = "+503 ";
+
+                if (raw.length > 3) {
+                    // omitir los primeros 3 dígitos del código de país ya agregado
+                    const local = raw.substring(3);
+                    if (local.length <= 4) {
+                        formatted += local;
+                    } else {
+                        formatted += local.substring(0, 4) + "-" + local.substring(4, 8);
+                    }
+                }
+
+                input.value = formatted;
+            });
+
+            input.addEventListener("keydown", function (e) {
+                // prevenir borrar el +503
+                if (input.selectionStart <= 5 && (e.key === "Backspace" || e.key === "Delete")) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const rolSelect = document.querySelector('select[name="rol"]');
+            const selloInput = document.querySelector('input[name="numeroSello"]');
+
+            function toggleSelloField() {
+                const selectedRol = rolSelect.value;
+                if (selectedRol === "Profesional") {
+                    selloInput.disabled = false;
+                    selloInput.required = true;
+                } else {
+                    selloInput.disabled = true;
+                    selloInput.required = false;
+                    selloInput.value = "";
+                }
+            }
+
+            // Activar lógica inicial por si ya está seleccionado algo
+            toggleSelloField();
+
+            // Escuchar cambios en el select
+            rolSelect.addEventListener("change", toggleSelloField);
+        });
+    </script>
+
+    <script>
+           
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === "password" ? "text" : "password";
+        }
+    
+
+    </script>
+
+
 </body>
 </html>
 
