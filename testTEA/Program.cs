@@ -7,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
+builder.Services.AddSingleton<EmailService>();
+
+
 builder.Services.AddDbContext<testContext>(options =>
 options.UseSqlServer(
     builder.Configuration.GetConnectionString("testDbConnection")
@@ -29,6 +32,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession();
+
+
+
 
 app.UseAuthorization();
 

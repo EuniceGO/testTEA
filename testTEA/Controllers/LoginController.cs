@@ -11,10 +11,13 @@ namespace testTEA.Controllers
             return View();
         }
         private readonly testContext _testContext;
+        private readonly EmailService _emailService;
 
-        public LoginController(testContext context)
+        public LoginController(testContext context, EmailService emailService)
         {
             _testContext = context;
+            _emailService = emailService;
+            _emailService = emailService;
         }
 
         // GET: Registro
@@ -51,7 +54,16 @@ namespace testTEA.Controllers
                     HttpContext.Session.SetString("rol", usuario.rol);
                     HttpContext.Session.SetString("numeroSello", usuario.numeroSello);
 
+                    _emailService.EnviarCorreo(
+                              "Nueva solicitud de acceso",
+                              $"Se ha registrado un nuevo usuario con correo: {usuario.correo} y rol: {usuario.rol}.\n" +
+                              $"Estado: {usuario.Estado}\nNúmero de Sello: {usuario.numeroSello}"
+                                                                                                 );
+
                     return RedirectToAction("Login", "Login");
+
+
+                   
                 }
                 catch (Exception ex)
                 {
@@ -61,6 +73,8 @@ namespace testTEA.Controllers
             }
 
             return View(usuario);
+
+
         }
 
 
