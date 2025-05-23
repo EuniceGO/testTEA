@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using testTEA.Models;
+using System.Security.Cryptography;
 
 namespace testTEA.Controllers
 {
@@ -27,10 +28,20 @@ namespace testTEA.Controllers
         }
 
         [HttpPost]
-        public IActionResult Registro(Usuario usuario)
+        public IActionResult Registro(Usuario usuario, string confirmarContrasena)
         {
+           
             if (ModelState.IsValid)
             {
+                if (usuario.contrasena != confirmarContrasena)
+                {
+                    ViewBag.Error = "Las contraseñas no coinciden.";
+                    return View(usuario);
+                }
+
+
+
+
                 var existe = _testContext.usuarios.FirstOrDefault(u => u.correo == usuario.correo);
                 if (existe != null)
                 {
@@ -40,6 +51,9 @@ namespace testTEA.Controllers
 
                 usuario.Estado ??= "Pendiente";
                 usuario.numeroSello ??= "";
+
+                // Hashear la contraseña
+                usuario.contrasena = SeguridadHelper.HashPassword(usuario.contrasena);
 
                 try
                 {
@@ -53,11 +67,12 @@ namespace testTEA.Controllers
                     HttpContext.Session.SetString("nombre", usuario.nombre);
                     HttpContext.Session.SetString("rol", usuario.rol);
                     HttpContext.Session.SetString("numeroSello", usuario.numeroSello);
+                    HttpContext.Session.SetString("telefono", usuario.telefono);
 
                     _emailService.EnviarCorreo(
                               "Nueva solicitud de acceso",
                               $"Se ha registrado un nuevo usuario con correo: {usuario.correo} y rol: {usuario.rol}.\n" +
-                              $"Estado: {usuario.Estado}\nNúmero de Sello: {usuario.numeroSello}"
+                              $"Estado: {usuario.Estado}\nNúmero de Teléfono: {usuario.telefono}"
                                                                                                  );
 
                     return RedirectToAction("Login", "Login");

@@ -1,0 +1,57 @@
+﻿@model testTEA.Models.Usuario
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Usuario</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.nombre)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.nombre)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.correo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.correo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.contrasena)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.contrasena)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.rol)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.rol)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.numeroSello)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.numeroSello)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Estado)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.telefono)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.id_usuario">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

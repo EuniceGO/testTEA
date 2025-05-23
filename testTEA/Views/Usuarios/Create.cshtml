@@ -1,0 +1,86 @@
+﻿@model testTEA.Models.Usuario
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Usuario</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="nombre" class="control-label"></label>
+                <input asp-for="nombre" class="form-control" />
+                <span asp-validation-for="nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="correo" class="control-label"></label>
+                <input asp-for="correo" class="form-control" />
+                <span asp-validation-for="correo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="contrasena" class="control-label"></label>
+                <input asp-for="contrasena" class="form-control" />
+                <span asp-validation-for="contrasena" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="rol" class="control-label"></label>
+                <select asp-for="rol" class="form-control">
+                    <option value="Profesional">Profesional</option>
+                    <option value="Padre">Padre</option>
+                    <option value="Administrador">Administrador</option>
+                </select>
+                <span asp-validation-for="rol" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="numeroSello" class="control-label"></label>
+                <input asp-for="numeroSello" class="form-control" />
+                <span asp-validation-for="numeroSello" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Estado" class="control-label"></label>
+                <select asp-for="Estado" class="form-control">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Aprobado">Aprobado</option>
+                    <option value="Rechazado">Rechazado</option>
+                </select>
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+
+
+           
+
+            <div class="form-group">
+                <label asp-for="telefono" class="control-label">Número de Teléfono</label>
+                <input asp-for="telefono"
+                       type="text"
+                       required
+                       class="input-full"
+                       placeholder="+503 0000-0000"
+                       maxlength="15" />
+                <span asp-validation-for="telefono" class="text-danger"></span>
+            </div>
+
+
+           
+
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
