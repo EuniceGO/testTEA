@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<head>
+    <link href="~/css/TestStyle.css" rel="stylesheet" />
+</head>
+
 <h1>Index</h1>
 
 <p>
@@ -19,7 +23,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.descripcion)
             </th>
-            <th></th>
+            <th>
+                <p class="text-center">Acciones</p>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -31,10 +37,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.descripcion)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.id_test">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id_test">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id_test">Delete</a>
+            <td class="botones">
+                <button class="buton-actions  btn-warning">
+                        <a asp-action="Edit" asp-route-id="@item.id_test" class="text-light">Edit</a>
+                </button>
+
+                <button class="buton-actions btn-danger">
+                    <a asp-action="Delete" asp-route-id="@item.id_test" class="text-light">Delete</a> 
+                </button>
+
+                <button class ="buton-actions btn-primary">
+                        <a asp-action="Index" asp-controller="Preguntas" asp-route-id="@item.id_test" class="text-light">Ver Preguntas</a>
+                </button>
             </td>
         </tr>
 }

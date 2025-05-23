@@ -1,0 +1,19 @@
+﻿body {
+}
+
+
+.botones {
+    align-content: center;
+    text-align: center;
+
+}
+.buton-actions {
+    width: 160px;
+    height: 48px;
+    border-radius: 5px;
+    margin-inline: 5px;
+    padding: 0;
+    font-size: 17px;
+    box-sizing: border-box;
+
+}

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using testTEA.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace testTEA.Controllers
 {
@@ -19,9 +20,17 @@ namespace testTEA.Controllers
         }
 
         // GET: Preguntas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            return View(await _context.preguntas.ToListAsync());
+            
+            ViewBag.TestId = id;
+
+            var preguntas = await _context.preguntas
+                .Where(p => p.id_test == id)
+            .ToListAsync();
+
+            
+            return View(preguntas);
         }
 
         // GET: Preguntas/Details/5
@@ -53,20 +62,19 @@ namespace testTEA.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id_pregunta,id_test,numero_pregunta,texto")] preguntas preguntas)
+        public async Task<IActionResult> Create([Bind("id_pregunta,numero_pregunta,texto")] preguntas preguntas, int id)
         {
-
             int? ultimoTestId = HttpContext.Session.GetInt32("TestId");
 
-          
-            preguntas.id_test = ultimoTestId.Value; // Asigna el valor a id_test
+            preguntas.id_test = ultimoTestId ?? id;
 
             if (ModelState.IsValid)
             {
                 _context.Add(preguntas);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = preguntas.id_test });
             }
+            ViewBag.TestId = preguntas.id_test;
             return View(preguntas);
         }
 

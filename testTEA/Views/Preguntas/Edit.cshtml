@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
 <h1>Edit</h1>
@@ -15,8 +16,8 @@
             <input type="hidden" asp-for="id_pregunta" />
             <div class="form-group">
                 <label asp-for="id_test" class="control-label"></label>
-                <input asp-for="id_test" class="form-control" />
-                <span asp-validation-for="id_test" class="text-danger"></span>
+                <input disabled type="text" asp-for="id_test" class="form-control" />
+                <span asp-validation-for="id_test"  class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="numero_pregunta" class="control-label"></label>
@@ -24,7 +25,7 @@
                 <span asp-validation-for="numero_pregunta" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="texto" class="control-label"></label>
+                <label asp-for="texto" class="control-label"> Pregunta</label>
                 <input asp-for="texto" class="form-control" />
                 <span asp-validation-for="texto" class="text-danger"></span>
             </div>

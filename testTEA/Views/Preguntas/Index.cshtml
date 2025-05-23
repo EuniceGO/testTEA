@@ -1,25 +1,29 @@
-﻿@model IEnumerable<testTEA.Models.preguntas>
+﻿@model List<testTEA.Models.preguntas>
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-route-id="@ViewBag.TestId">Agregar  Pregunta</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.id_test)
+               <p> Id Test</p>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.numero_pregunta)
+               <p> Id Pregunta</p>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.texto)
+                <p>Número de la pregunta</p>
+            </th>
+            <th>
+                <p>Pregunta</p>
             </th>
             <th></th>
         </tr>
@@ -29,6 +33,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.id_test)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_pregunta)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.numero_pregunta)
