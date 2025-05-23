@@ -8,7 +8,8 @@ namespace testTEA.Models
         {
         }
 
-        public DbSet<Usuario> usuarios { get; set; }
+        public DbSet<Usuario> usuarios { get; set; } 
+        public DbSet<test> test { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

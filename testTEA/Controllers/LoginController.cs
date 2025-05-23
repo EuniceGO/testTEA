@@ -113,6 +113,9 @@ namespace testTEA.Controllers
                 else if (user.rol == "Profesional")
                 {
                     return RedirectToAction("Index", "Profesional");
+                }else if (user.rol == "Administrador")
+                {
+                    return RedirectToAction("Index_admin", "Admin");
                 }
             }
 

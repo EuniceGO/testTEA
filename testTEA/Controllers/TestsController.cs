@@ -21,7 +21,7 @@ namespace testTEA.Controllers
         // GET: Tests
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Test.ToListAsync());
+            return View(await _context.test.ToListAsync());
         }
 
         // GET: Tests/Details/5
@@ -32,7 +32,7 @@ namespace testTEA.Controllers
                 return NotFound();
             }
 
-            var test = await _context.Test
+            var test = await _context.test
                 .FirstOrDefaultAsync(m => m.id_test == id);
             if (test == null)
             {
@@ -72,7 +72,7 @@ namespace testTEA.Controllers
                 return NotFound();
             }
 
-            var test = await _context.Test.FindAsync(id);
+            var test = await _context.test.FindAsync(id);
             if (test == null)
             {
                 return NotFound();
@@ -123,7 +123,7 @@ namespace testTEA.Controllers
                 return NotFound();
             }
 
-            var test = await _context.Test
+            var test = await _context.test
                 .FirstOrDefaultAsync(m => m.id_test == id);
             if (test == null)
             {
@@ -138,10 +138,10 @@ namespace testTEA.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var test = await _context.Test.FindAsync(id);
+            var test = await _context.test.FindAsync(id);
             if (test != null)
             {
-                _context.Test.Remove(test);
+                _context.test.Remove(test);
             }
 
             await _context.SaveChangesAsync();
@@ -150,7 +150,7 @@ namespace testTEA.Controllers
 
         private bool TestExists(int id)
         {
-            return _context.Test.Any(e => e.id_test == id);
+            return _context.test.Any(e => e.id_test == id);
         }
     }
 }
