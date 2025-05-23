@@ -23,14 +23,11 @@ namespace testTEA.Controllers
             return View();
         }
 
-        // POST: Registro
         [HttpPost]
         public IActionResult Registro(Usuario usuario)
         {
             if (ModelState.IsValid)
             {
-
-                // Verificar si ya existe un usuario con ese correo
                 var existe = _testContext.usuarios.FirstOrDefault(u => u.correo == usuario.correo);
                 if (existe != null)
                 {
@@ -38,19 +35,35 @@ namespace testTEA.Controllers
                     return View(usuario);
                 }
 
-                _testContext.usuarios.Add(usuario);
-                _testContext.SaveChanges();
+                usuario.Estado ??= "Pendiente";
+                usuario.numeroSello ??= "";
 
-                // Guardamos la sesión con los datos del usuario
-                HttpContext.Session.SetInt32("id_usuario", usuario.id_usuario);
-                HttpContext.Session.SetString("nombre", usuario.nombre);
-                HttpContext.Session.SetString("rol", usuario.rol);
+                try
+                {
+                    _testContext.usuarios.Add(usuario);
+                    _testContext.SaveChanges();
 
-                return RedirectToAction("Login", "Login");
+                    // Recargar el usuario para obtener el ID autogenerado
+                    _testContext.Entry(usuario).Reload();
+
+                    HttpContext.Session.SetInt32("id_usuario", usuario.id_usuario);
+                    HttpContext.Session.SetString("nombre", usuario.nombre);
+                    HttpContext.Session.SetString("rol", usuario.rol);
+                    HttpContext.Session.SetString("numeroSello", usuario.numeroSello);
+
+                    return RedirectToAction("Login", "Login");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error = "Ocurrió un error al registrar el usuario: " + ex.Message;
+                    return View(usuario);
+                }
             }
 
             return View(usuario);
         }
+
+
 
         // GET: Login
         public IActionResult Login()
@@ -67,9 +80,17 @@ namespace testTEA.Controllers
 
             if (user != null)
             {
+                if (user.Estado != "Aprobado")
+                {
+                    ViewBag.Error = "Tu cuenta aún no ha sido aprobada por un administrador.";
+                    return View();
+                }
+
+
                 HttpContext.Session.SetInt32("id_usuario", user.id_usuario);
                 HttpContext.Session.SetString("nombre", user.nombre);
                 HttpContext.Session.SetString("rol", user.rol);
+               
 
                 if (user.rol == "Padre")
                 {

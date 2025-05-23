@@ -105,6 +105,9 @@
             <label>Contraseña</label>
             @Html.PasswordFor(m => m.contrasena, new { @required = "required" })
 
+            <label>Número de Sello</label>
+            @Html.TextBoxFor(m => m.numeroSello, new { @required = "required" })
+
             <button type="submit">Registrar</button>
         }
 

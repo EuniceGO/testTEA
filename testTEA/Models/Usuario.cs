@@ -11,5 +11,16 @@ namespace testTEA.Models
         public string correo { get; set; }
         public string contrasena { get; set; }
         public string rol { get; set; }
+
+      
+
+        [Required]
+        public string numeroSello { get; set; } = "";
+
+        [Required]
+        public string Estado { get; set; } = "Pendiente";
+
+
+
     }
 }
