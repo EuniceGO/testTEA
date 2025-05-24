@@ -9,22 +9,22 @@ using testTEA.Models;
 
 namespace testTEA.Controllers
 {
-    public class UsuariosController : Controller
+    public class CuestionariosController : Controller
     {
         private readonly testContext _context;
 
-        public UsuariosController(testContext context)
+        public CuestionariosController(testContext context)
         {
             _context = context;
         }
 
-        // GET: Usuarios
+        // GET: Cuestionarios
         public async Task<IActionResult> Index()
         {
-            return View(await _context.usuarios.ToListAsync());
+            return View(await _context.cuestionarios.ToListAsync());
         }
 
-        // GET: Usuarios/Details/5
+        // GET: Cuestionarios/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,45 +32,44 @@ namespace testTEA.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.usuarios
-                .FirstOrDefaultAsync(m => m.id_usuario == id);
-            if (usuario == null)
+            var cuestionarios = await _context.cuestionarios
+                .FirstOrDefaultAsync(m => m.id_cuestionario == id);
+            if (cuestionarios == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            return View(cuestionarios);
         }
 
-        // GET: Usuarios/Create
-        public IActionResult Create()
+        // GET: Cuestionarios/Create
+        public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Usuarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: CuestionariosController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id_usuario,nombre,correo,contrasena,rol,numeroSello,Estado,telefono")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("id_cuestionario,id_paciente,id_test,fecha_realizacion,etapa,total_puntaje,resultado")] cuestionarios _cuestionario)
         {
+            int? ultimoIdUsuario = HttpContext.Session.GetInt32("id_usuario");
+            int? ultimoTestId = HttpContext.Session.GetInt32("TestId");
 
-            
-           
+            _cuestionario.id_paciente = (int)ultimoIdUsuario;
+            _cuestionario.id_test = (int)ultimoTestId;
 
             if (ModelState.IsValid)
             {
-                // Hashear la contraseña
-                usuario.contrasena = SeguridadHelper.HashPassword(usuario.contrasena);
-                _context.Add(usuario);
+
+                _context.Add(_cuestionario);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("IndexPreguntas");
             }
-            return View(usuario);
+            return View(_cuestionario);
         }
 
-        // GET: Usuarios/Edit/5
+        // GET: Cuestionarios/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,22 +77,22 @@ namespace testTEA.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.usuarios.FindAsync(id);
-            if (usuario == null)
+            var cuestionarios = await _context.cuestionarios.FindAsync(id);
+            if (cuestionarios == null)
             {
                 return NotFound();
             }
-            return View(usuario);
+            return View(cuestionarios);
         }
 
-        // POST: Usuarios/Edit/5
+        // POST: Cuestionarios/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id_usuario,nombre,correo,contrasena,rol,numeroSello,Estado,telefono")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("id_cuestionario,id_paciente,id_test,fecha_realizacion,etapa,total_puntaje,resultado")] cuestionarios cuestionarios)
         {
-            if (id != usuario.id_usuario)
+            if (id != cuestionarios.id_cuestionario)
             {
                 return NotFound();
             }
@@ -102,15 +101,12 @@ namespace testTEA.Controllers
             {
                 try
                 {
-                    // Hashear la contraseña
-                    usuario.contrasena = SeguridadHelper.HashPassword(usuario.contrasena);
-
-                    _context.Update(usuario);
+                    _context.Update(cuestionarios);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioExists(usuario.id_usuario))
+                    if (!cuestionariosExists(cuestionarios.id_cuestionario))
                     {
                         return NotFound();
                     }
@@ -121,10 +117,10 @@ namespace testTEA.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuario);
+            return View(cuestionarios);
         }
 
-        // GET: Usuarios/Delete/5
+        // GET: Cuestionarios/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,34 +128,34 @@ namespace testTEA.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.usuarios
-                .FirstOrDefaultAsync(m => m.id_usuario == id);
-            if (usuario == null)
+            var cuestionarios = await _context.cuestionarios
+                .FirstOrDefaultAsync(m => m.id_cuestionario == id);
+            if (cuestionarios == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            return View(cuestionarios);
         }
 
-        // POST: Usuarios/Delete/5
+        // POST: Cuestionarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usuario = await _context.usuarios.FindAsync(id);
-            if (usuario != null)
+            var cuestionarios = await _context.cuestionarios.FindAsync(id);
+            if (cuestionarios != null)
             {
-                _context.usuarios.Remove(usuario);
+                _context.cuestionarios.Remove(cuestionarios);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsuarioExists(int id)
+        private bool cuestionariosExists(int id)
         {
-            return _context.usuarios.Any(e => e.id_usuario == id);
+            return _context.cuestionarios.Any(e => e.id_cuestionario == id);
         }
     }
 }

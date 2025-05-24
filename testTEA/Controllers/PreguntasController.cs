@@ -32,6 +32,22 @@ namespace testTEA.Controllers
             
             return View(preguntas);
         }
+        public async Task<IActionResult> IndexPreguntas(int id)
+        {
+
+
+            var preguntas = await _context.preguntas
+                .Where(p => p.id_test == id)
+            .ToListAsync();
+
+            
+            return View(preguntas);
+        }
+
+
+     
+
+
 
         // GET: Preguntas/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -77,6 +93,7 @@ namespace testTEA.Controllers
             ViewBag.TestId = preguntas.id_test;
             return View(preguntas);
         }
+        
 
         // GET: Preguntas/Edit/5
         public async Task<IActionResult> Edit(int? id)

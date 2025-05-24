@@ -12,6 +12,7 @@ namespace testTEA.Models
         public DbSet<Usuario> usuarios { get; set; } 
         public DbSet<tests> tests { get; set; }
 
+        public DbSet<pacientes> pacientes { get; set; } 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configuración para que EF Core entienda que id_usuario se genera automáticamente
@@ -20,5 +21,6 @@ namespace testTEA.Models
                 .ValueGeneratedOnAdd();
         }
         public DbSet<testTEA.Models.preguntas> preguntas { get; set; } = default!;
+        public DbSet<testTEA.Models.cuestionarios> cuestionarios { get; set; } = default!;
     }
 }
