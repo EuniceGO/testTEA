@@ -75,6 +75,8 @@ namespace testTEA.Controllers
                               $"Estado: {usuario.Estado}\nNúmero de Teléfono: {usuario.telefono}"
                                                                                                  );
 
+                    TempData["RegistroExitoso"] = "Registro exitoso. En un periodo de 24 horas un agente se comunicará contigo para brindarte detalles del estado de tu usuario.";
+
                     return RedirectToAction("Login", "Login");
 
 

@@ -76,9 +76,36 @@
                 color: #007bff;
                 text-decoration: none;
             }
+
+        .alert {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
     </style>
 </head>
+
+
+
 <body>
+    @if (TempData["RegistroExitoso"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["RegistroExitoso"]
+        </div>
+    }
+
     <div class="form-container">
         <h2>Iniciar Sesión</h2>
 
@@ -102,4 +129,5 @@
         </div>
     </div>
 </body>
+
 </html>
