@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using testTEA.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace testTEA.Controllers
 {
@@ -13,6 +15,12 @@ namespace testTEA.Controllers
         }
         public IActionResult Index()
         {
+            var id_test = from t in _context.tests
+                          where t.nombre == "M-CHART"
+                          select t.id_test;
+
+            HttpContext.Session.SetInt32("IdTest", id_test.FirstOrDefault());
+
             return View();
         }
 
@@ -39,6 +47,7 @@ namespace testTEA.Controllers
                 _context.Add(_cuestionario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("IndexPreguntas" , "Preguntas");
+
             }
             return View(_cuestionario);
         }
