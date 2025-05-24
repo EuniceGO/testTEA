@@ -1,51 +1,24 @@
 ﻿@{
-    Layout = "~/Views/Shared/_LayoutPadre.cshtml";
+    Layout = null;
     ViewBag.Title = "Dashboard";
 }
 
-@section Styles {
-    <style>
-        .dashboard {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 400px;
-            margin: 0 auto;
-            margin-top: 50px;
-        }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard</title>
 
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 25px;
-        }
+</head>
+<body>
+    <div class="dashboard">
+        <h2>Bienvenido Padre de Familia</h2>
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            margin: 10px 0;
-        }
-
-        a {
-            text-decoration: none;
-            color: #007bff;
-            font-weight: bold;
-        }
-
-            a:hover {
-                color: #0056b3;
-            }
-    </style>
-}
-
-<div class="dashboard">
-    <h2>Bienvenido Padre de Familia</h2>
-
+    </div>
     <form asp-action="CreateCuestionario" method="post">
         <button type="submit" class="btn btn-primary">Crear Cuestionario</button>
     </form>
-</div>
+    <a asp-action="IndexPreguntas" asp-controller="Preguntas">Ver preguntas</a>
+</body>
+</html>
+

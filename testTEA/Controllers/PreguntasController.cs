@@ -32,15 +32,16 @@ namespace testTEA.Controllers
             
             return View(preguntas);
         }
-        public async Task<IActionResult> IndexPreguntas(int id)
+        public async Task<IActionResult> IndexPreguntas()
         {
 
+            int? ultimoTestId = HttpContext.Session.GetInt32("IdTest");
 
-            var preguntas = await _context.preguntas
-                .Where(p => p.id_test == id)
-            .ToListAsync();
+            var preguntas = (from p in _context.preguntas
+                            where p.id_test == ultimoTestId
+                            select p).ToList();
 
-            
+
             return View(preguntas);
         }
 
