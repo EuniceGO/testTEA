@@ -8,17 +8,18 @@
 <head>
     <meta charset="utf-8" />
     <title>Dashboard</title>
-
+    <link href="~/css/Preguntas.css" rel="stylesheet" />
+    
 </head>
 <body>
-    <div class="dashboard">
-        <h2>Bienvenido Padre de Familia</h2>
-
+    <div class="container">
+        <div class="dashboard-content">
+            <h2>Bienvenido Padre de Familia</h2>
+            <form asp-action="CreateCuestionario" method="post">
+                <button type="submit" class="btn btn-primary">Crear Cuestionario</button>
+            </form>
+            <a asp-action="IndexPreguntas" asp-controller="Preguntas">Ver preguntas</a>
+        </div>
     </div>
-    <form asp-action="CreateCuestionario" method="post">
-        <button type="submit" class="btn btn-primary">Crear Cuestionario</button>
-    </form>
-    <a asp-action="IndexPreguntas" asp-controller="Preguntas">Ver preguntas</a>
 </body>
 </html>
-
