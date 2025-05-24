@@ -102,11 +102,29 @@ namespace testTEA.Controllers
             {
                 try
                 {
-                    // Hashear la contraseña
-                    usuario.contrasena = SeguridadHelper.HashPassword(usuario.contrasena);
+                    // Obtener el usuario original desde la base de datos
+                    var usuarioExistente = await _context.usuarios.FindAsync(id);
+                    if (usuarioExistente == null)
+                    {
+                        return NotFound();
+                    }
 
-                    _context.Update(usuario);
+                    // Actualizar campos normales
+                    usuarioExistente.nombre = usuario.nombre;
+                    usuarioExistente.correo = usuario.correo;
+                    usuarioExistente.rol = usuario.rol;
+                    usuarioExistente.numeroSello = usuario.numeroSello;
+                    usuarioExistente.Estado = usuario.Estado;
+                    usuarioExistente.telefono = usuario.telefono;
+
+                    // Solo actualizar contraseña si se ingresó una nueva
+                    if (!string.IsNullOrWhiteSpace(usuario.contrasena))
+                    {
+                        usuarioExistente.contrasena = SeguridadHelper.HashPassword(usuario.contrasena);
+                    }
+
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -119,10 +137,11 @@ namespace testTEA.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
+
             return View(usuario);
         }
+
 
         // GET: Usuarios/Delete/5
         public async Task<IActionResult> Delete(int? id)

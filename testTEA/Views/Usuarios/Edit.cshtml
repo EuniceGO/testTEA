@@ -23,11 +23,16 @@
                 <input asp-for="correo" class="form-control" />
                 <span asp-validation-for="correo" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="contrasena" class="control-label"></label>
-                <input asp-for="contrasena" class="form-control" />
+                <label class="control-label">Nueva Contraseña (dejar vacío si no desea cambiarla)</label>
+                <input name="contrasena" class="form-control" type="password" />
                 <span asp-validation-for="contrasena" class="text-danger"></span>
             </div>
+
+
+       
+
             <div class="form-group">
                 <label asp-for="rol" class="control-label"></label>
                 <select asp-for="rol" class="form-control">
