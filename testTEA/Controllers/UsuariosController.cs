@@ -19,9 +19,17 @@ namespace testTEA.Controllers
         }
 
         // GET: Usuarios
-        public async Task<IActionResult> Index()
+        // GET: Usuarios
+        public async Task<IActionResult> Index(string nombre)
         {
-            return View(await _context.usuarios.ToListAsync());
+            var usuarios = from u in _context.usuarios select u;
+
+            if (!string.IsNullOrEmpty(nombre))
+            {
+                usuarios = usuarios.Where(u => u.nombre.Contains(nombre));
+            }
+
+            return View(await usuarios.ToListAsync());
         }
 
         // GET: Usuarios/Details/5

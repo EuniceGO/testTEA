@@ -7,9 +7,32 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div style="margin-bottom: 20px;">
+    <form asp-controller="Usuarios" asp-action="Index" method="get" id="formBusqueda">
+        <input type="text" name="nombre" placeholder="Buscar por nombre" class="form-control" id="inputBusqueda" autocomplete="off" />
+    </form>
+
+    <script>
+        let timeout = null;
+        const input = document.getElementById('inputBusqueda');
+        const form = document.getElementById('formBusqueda');
+
+        input.addEventListener('input', function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                form.submit();
+            }, 500);
+        });
+    </script>
+</div>
+
+<div>
+    <p>
+        <a asp-action="Create" class="btn btn-sm btn-primary">Create New</a>
+    </p>
+</div>
+
+
 <table class="table">
     <thead>
         <tr>
@@ -61,12 +84,17 @@
             <td>
                 @Html.DisplayFor(modelItem => item.telefono)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.id_usuario">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id_usuario">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id_usuario">Delete</a>
-            </td>
+                <td>
+                    <div class="d-flex gap-2">
+                        <a asp-action="Edit" asp-route-id="@item.id_usuario" class="btn btn-sm btn-primary">Editar</a>
+                        <a asp-action="Details" asp-route-id="@item.id_usuario" class="btn btn-sm btn-info">Detalles</a>
+                        <a asp-action="Delete" asp-route-id="@item.id_usuario" class="btn btn-sm btn-danger">Eliminar</a>
+                    </div>
+                </td>
+
+
         </tr>
 }
     </tbody>
+
 </table>
